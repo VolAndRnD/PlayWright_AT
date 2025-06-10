@@ -11,23 +11,25 @@ export class MainPage {
   async openMainPage() {
     await this.page.goto('https://release.workhere.ru/');
     await this.page.waitForLoadState('load');
-    await this.page.getByTestId('login').click();
-    await this.page.getByRole('switch', { name: 'Я соискатель Я работодатель' }).click();
-    await expect(this.page.locator("//span[@class='switch-text-color__Ca2S1']")).toContainText(
-      'Я соискатель',
-      { timeout: 3000 },
-    );
+  }
+  async openAuthModal() {
+    await test.step('Открытие модалки авторизации для работодателя', async () => {
+      await this.page.getByTestId('login').click();
+      await this.page.getByRole('switch', { name: 'Я соискатель Я работодатель' }).click();
+      await expect(this.page.locator("//span[@class='switch-text-color__Ca2S1']")).toContainText(
+        'Я соискатель',
+        { timeout: 3000 },
+      );
+    });
   }
 
   async enterPhoneNumber() {
     await test.step('Смена номера телефона под код страны Беларусь', async () => {
       const countryButton = await this.page.getByRole('button', { name: 'Russia: +' });
-      await expect(countryButton).toBeVisible({ timeout: 3000 });
+      await expect(countryButton).toBeVisible();
       await countryButton.click();
-      await expect(this.page.getByRole('option', { name: 'Belarus+' })).toBeVisible({
-        timeout: 3000,
-      });
       const belarusOption = await this.page.getByRole('option', { name: 'Belarus+' });
+      await expect(belarusOption).toBeVisible();
       await belarusOption.click();
     });
     await test.step('Ввод номера телефона пользователя', async () => {

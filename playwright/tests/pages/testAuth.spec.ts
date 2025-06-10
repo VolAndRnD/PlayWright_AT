@@ -7,12 +7,14 @@ test.describe('Тесты способов авторизации работод
 
   test('Авторизация c помощью смс', async ({ mainPage }) => {
     await mainPage.openMainPage();
+    await mainPage.openAuthModal();
     await mainPage.enterPhoneNumber();
     await mainPage.enterSMSPassword();
   });
 
   test('Авторизация с помощью пароля', async ({ mainPage }) => {
     await mainPage.openMainPage();
+    await mainPage.openAuthModal();
     await mainPage.enterPhoneNumber();
     await mainPage.enterLoginPassword();
   });
