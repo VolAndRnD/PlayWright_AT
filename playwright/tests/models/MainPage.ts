@@ -69,4 +69,7 @@ export class MainPage {
       await buttonEnter.click();
     });
   }
+  async closeMainPage() {
+    await this.page.close();
+  }
 }
