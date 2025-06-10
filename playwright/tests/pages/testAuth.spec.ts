@@ -1,4 +1,4 @@
-import { test, expect } from './fixtures/mainPage';
+import { test, expect } from '../fixtures/mainPage';
 
 test.describe('Тесты способов авторизации работодателя', () => {
   test.afterEach(async ({ mainPage }) => {
