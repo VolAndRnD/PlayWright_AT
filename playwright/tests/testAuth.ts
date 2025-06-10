@@ -1,7 +1,7 @@
 import { test } from '@playwright/test';
 import { MainPage } from '../tests/models/MainPage';
 
-test.describe('Тесты авторизации работодателя', () => {
+test.describe('Тесты способов авторизации работодателя', () => {
   test.afterEach(async ({ page }) => {
     await page.close();
   });
