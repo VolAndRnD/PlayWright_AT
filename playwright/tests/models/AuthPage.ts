@@ -46,9 +46,6 @@ export class AuthPage {
     if (modal) {
       await this.page.getByTestId('close-dialog').click();
     }
-    // } else if (notice) {
-    //   await this.page.locator('.ant-notification-notice-close').click();
-    // }
     await this.page.getByText('Автотест Автотестович').waitFor({
       state: 'visible',
       timeout: 15000,
@@ -60,37 +57,4 @@ export class AuthPage {
     });
     await this.page.getByRole('menuitem', { name: 'Выйти' }).click();
   }
-
-  // try {
-  //   // 1. Закрываем все возможные перекрывающие элементы
-  //   await this.closeOverlays();
-
-  //   // 2. Явное ожидание перед кликом
-  //   await this.page.getByText('Автотест Автотестович').waitFor({
-  //     state: 'visible',
-  //     timeout: 15000,
-  //   });
-
-  //   // 3. Клик с принудительным параметром (если всё ещё перекрыто)
-  //   await this.page.getByText('Автотест Автотестович').click({
-  //     force: true, // Принудительный клик даже если элемент перекрыт
-  //     timeout: 10000,
-  //   });
-
-  //   // 4. Ожидание меню
-  //   await this.page.getByRole('menuitem', { name: 'Выйти' }).waitFor({
-  //     state: 'visible',
-  //     timeout: 10000,
-  //   });
-
-  //   // 5. Клик по пункту "Выйти"
-  //   await this.page.getByRole('menuitem', { name: 'Выйти' }).click();
-  // } catch (error) {
-  //   console.error('Ошибка в exitLogin:', error);
-  //   throw error;
-  // }
-
-  // async closeAuthPage() {
-  //   await this.page.close();
-  // }
 }
