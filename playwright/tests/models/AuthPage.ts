@@ -33,28 +33,28 @@ export class AuthPage {
     });
   }
   async exitLogin() {
-    const modal = await this.page
-      .locator('.ant-modal-body')
-      .waitFor({ state: 'visible', timeout: 30000 })
-      .then(() => true) // Если элемент стал видимым → возвращаем true
-      .catch(() => false);
-    const notice = await this.page
-      .locator('.ant-notification-notice')
-      .waitFor({ state: 'visible', timeout: 10000 })
-      .then(() => true)
-      .catch(() => false);
-    if (modal) {
-      await this.page.getByTestId('close-dialog').click();
-    }
-    await this.page.getByText('Автотест Автотестович').waitFor({
-      state: 'visible',
-      timeout: 15000,
+    await test.step(`Проверка на отображение стартовой модалки после авторизации`, async () => {
+      const modal = await this.page
+        .locator('.ant-modal-body')
+        .waitFor({ state: 'visible', timeout: 30000 })
+        .then(() => true) // Если элемент стал видимым → возвращаем true
+        .catch(() => false);
+      if (modal) {
+        await this.page.getByTestId('close-dialog').click();
+      }
     });
-    await this.page.getByText('Автотест Автотестович').click();
-    await this.page.getByRole('menuitem', { name: 'Выйти' }).waitFor({
-      state: 'visible',
-      timeout: 10000,
+
+    await test.step(`Раскрытие меню пользователя и разлогинивание`, async () => {
+      await this.page.getByText('Автотест Автотестович').waitFor({
+        state: 'visible',
+        timeout: 15000,
+      });
+      await this.page.getByText('Автотест Автотестович').click();
+      await this.page.getByRole('menuitem', { name: 'Выйти' }).waitFor({
+        state: 'visible',
+        timeout: 10000,
+      });
+      await this.page.getByRole('menuitem', { name: 'Выйти' }).click();
     });
-    await this.page.getByRole('menuitem', { name: 'Выйти' }).click();
   }
 }
