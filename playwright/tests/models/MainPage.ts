@@ -12,6 +12,7 @@ export class MainPage {
     await this.page.goto('https://release.workhere.ru/');
     await this.page.waitForLoadState('load');
   }
+
   async openAuthModal() {
     await test.step('Открытие модалки авторизации для работодателя', async () => {
       await this.page.getByTestId('login').click();
@@ -22,7 +23,6 @@ export class MainPage {
       );
     });
   }
-
   async enterPhoneNumber() {
     await test.step('Смена номера телефона под код страны Беларусь', async () => {
       const countryButton = await this.page.getByRole('button', { name: 'Russia: +' });
@@ -39,7 +39,6 @@ export class MainPage {
       await activeField.fill('+375 (30) 000 00 02');
     });
   }
-
   async enterSMSPassword() {
     await test.step('Ввод кода авторизации из смс', async () => {
       const buttonEnter = await this.page.getByRole('button', { name: 'Войти' });
@@ -52,7 +51,6 @@ export class MainPage {
       await activeTextBox.fill('1111');
     });
   }
-
   async enterLoginPassword() {
     await test.step('Активация поля для ввода пароля', async () => {
       const buttonUsePassword = await this.page.getByText('Войти, используя пароль');

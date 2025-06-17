@@ -1,18 +1,11 @@
 import { test as base } from '@playwright/test';
-import { MainPage } from '../models/MainPage';
 import { AuthPage } from '../models/AuthPage';
 
 interface MyFixtures {
-  mainPage: MainPage;
   authPage: AuthPage;
 }
 
 export const test = base.extend<MyFixtures>({
-  mainPage: async ({ page }, use) => {
-    const mainPage = new MainPage(page);
-    await mainPage.openMainPage();
-    await use(mainPage);
-  },
   authPage: async ({ page }, use) => {
     const authPage = new AuthPage(page);
     await authPage.openAuthPage();
