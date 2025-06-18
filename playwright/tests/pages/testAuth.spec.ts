@@ -1,21 +1,29 @@
 import { test } from '../fixtures/mainPage';
 import { authElements, authUIElements } from '../locators/AuthLocators';
+import { lendAuthElements, lendUIElements } from '../locators/LendLocators';
+import { LendingPage } from '../models/LendingPage';
 
 test.describe('Тесты способов авторизации работодателя', () => {
-  test('Авторизация c помощью смс со страницы лендинга', async ({ lendingPage }) => {
-    await lendingPage.openMainPage();
-    await lendingPage.openAuthModal();
-    await lendingPage.enterPhoneNumber();
-    await lendingPage.enterSMSPassword();
-    await lendingPage.closeMainPage();
-  });
+  test(`Авторизация c помощью  со страницы лендинга`, async ({ lendingPage, browser }) => {
+    test.setTimeout(60000);
 
-  test('Авторизация с помощью пароля со страницы лендинга', async ({ lendingPage }) => {
-    await lendingPage.openMainPage();
-    await lendingPage.openAuthModal();
-    await lendingPage.enterPhoneNumber();
-    await lendingPage.enterLoginPassword();
-    await lendingPage.closeMainPage();
+    for (const testCase of lendAuthElements) {
+      const context = await browser.newContext();
+      const page = await context.newPage();
+      const lendingPage = new LendingPage(page);
+      try {
+        await lendingPage.openMainPage();
+        await lendingPage.openAuthModal(lendUIElements);
+        await lendingPage.enterPhoneNumber(testCase);
+        if (testCase.name === 'SMS') {
+          await lendingPage.enterSMSPassword(testCase);
+        } else {
+          await lendingPage.enterLoginPassword(testCase);
+        }
+      } finally {
+        await context.close();
+      }
+    }
   });
 
   test('Авторизация со страницы авторизации site-login', async ({ authPage }) => {

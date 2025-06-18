@@ -18,7 +18,7 @@ export class AuthPage {
   async enterLogin(credentials: AuthElements) {
     await test.step(`Используется ${credentials.name} в поле логина`, async () => {
       if (credentials.loginField) {
-        const loginField = await credentials.loginField(this.page);
+        const loginField = credentials.loginField(this.page);
         await expect(loginField).toBeVisible();
         await loginField.click();
         if (credentials.text) {
@@ -29,7 +29,7 @@ export class AuthPage {
 
     await test.step(`Ввод валидного пароля`, async () => {
       if (credentials.passwordField && credentials.password) {
-        const passwordField = await credentials.passwordField(this.page);
+        const passwordField = credentials.passwordField(this.page);
         await expect(passwordField).toBeVisible();
         await passwordField.click();
         await passwordField.fill(credentials.password);
