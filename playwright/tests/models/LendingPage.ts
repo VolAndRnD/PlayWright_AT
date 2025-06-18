@@ -1,7 +1,6 @@
-import { Page } from '@playwright/test';
-import { test, expect } from '@playwright/test';
+import { Page, test, expect } from '@playwright/test';
 
-export class MainPage {
+export class LendingPage {
   readonly page: Page;
 
   constructor(page: Page) {
