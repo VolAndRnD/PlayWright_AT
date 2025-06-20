@@ -1,6 +1,6 @@
 import { Page, Locator } from '@playwright/test';
 
-export class LendLocators {
+export class LendingLocators {
   static getOpenModalAuth(page: Page): Locator {
     return page.getByTestId('login');
   }
@@ -10,7 +10,7 @@ export class LendLocators {
   }
 
   static getEmployerSwitcher(page: Page): Locator {
-    return page.locator("//span[@class='switch-text-color__Ca2S1']");
+    return page.locator('button[aria-checked="true"]').filter({ hasText: 'Я работодатель' });
   }
 
   static getCountryButton(page: Page): Locator {
@@ -36,48 +36,51 @@ export class LendLocators {
   }
 }
 
-export interface LendElements {
-  modalAuth?: (page: Page) => Locator;
-  setEmployerSwitcher?: (page: Page) => Locator;
-  getEmployerSwitcher?: (page: Page) => Locator;
-  getCountryButton?: (page: Page) => Locator;
-  setCountryButton?: (page: Page) => Locator;
-  setNumberPhoneField?: (page: Page) => Locator;
-  getEnterButton?: (page: Page) => Locator;
+export interface LendingElements {
+  getCountryButton: (page: Page) => Locator;
+  setCountryButton: (page: Page) => Locator;
+  setNumberPhoneField: (page: Page) => Locator;
+  getEnterButton: (page: Page) => Locator;
   setSMSField?: (page: Page) => Locator;
   getPasswordField?: (page: Page) => Locator;
   setPasswordField?: (page: Page) => Locator;
-  text?: string;
-  name?: string;
-  password?: string;
+  text: string;
+  name: string;
+  password: string;
 }
 
-export const lendAuthElements: LendElements[] = [
+export interface LendingUIElements {
+  modalAuth: (page: Page) => Locator;
+  setEmployerSwitcher: (page: Page) => Locator;
+  getEmployerSwitcher: (page: Page) => Locator;
+}
+
+export const lendingAuthElements: LendingElements[] = [
   {
-    getCountryButton: LendLocators.getCountryButton,
-    setCountryButton: LendLocators.setCountryButton,
-    setNumberPhoneField: LendLocators.setNumberPhoneField,
-    setSMSField: LendLocators.setSMSField,
-    getEnterButton: LendLocators.getEnterButton,
+    getCountryButton: LendingLocators.getCountryButton,
+    setCountryButton: LendingLocators.setCountryButton,
+    setNumberPhoneField: LendingLocators.setNumberPhoneField,
+    setSMSField: LendingLocators.setSMSField,
+    getEnterButton: LendingLocators.getEnterButton,
     text: '+375 (30) 000 00 02',
     name: 'SMS',
     password: '1111',
   },
   {
-    getCountryButton: LendLocators.getCountryButton,
-    setCountryButton: LendLocators.setCountryButton,
-    setNumberPhoneField: LendLocators.setNumberPhoneField,
-    getPasswordField: LendLocators.getPasswordField,
-    setPasswordField: LendLocators.setPasswordField,
-    getEnterButton: LendLocators.getEnterButton,
+    getCountryButton: LendingLocators.getCountryButton,
+    setCountryButton: LendingLocators.setCountryButton,
+    setNumberPhoneField: LendingLocators.setNumberPhoneField,
+    getPasswordField: LendingLocators.getPasswordField,
+    setPasswordField: LendingLocators.setPasswordField,
+    getEnterButton: LendingLocators.getEnterButton,
     text: '+375 (30) 000 00 02',
     name: 'password',
     password: 'gbhjvfy',
   },
 ];
 
-export const lendUIElements: LendElements = {
-  modalAuth: LendLocators.getOpenModalAuth,
-  setEmployerSwitcher: LendLocators.setEmployerSwitcher,
-  getEmployerSwitcher: LendLocators.getEmployerSwitcher,
+export const lendingUIElements: LendingUIElements = {
+  modalAuth: LendingLocators.getOpenModalAuth,
+  setEmployerSwitcher: LendingLocators.setEmployerSwitcher,
+  getEmployerSwitcher: LendingLocators.getEmployerSwitcher,
 };

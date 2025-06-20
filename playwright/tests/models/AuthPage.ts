@@ -1,5 +1,5 @@
 import { Page, test, expect } from '@playwright/test';
-import { AuthElements } from '../locators/AuthLocators';
+import { AuthElements, authUIElements } from '../locators/AuthLocators';
 
 export class AuthPage {
   readonly page: Page;
@@ -41,27 +41,23 @@ export class AuthPage {
       }
     });
   }
-  async exitLogin(uiElements: AuthElements) {
+  async exitLogin(uiElements: authUIElements) {
     await test.step(`Проверка на отображение стартовой модалки после авторизации`, async () => {
-      if (uiElements.bodyModal && uiElements.closeModalButton) {
-        const isModalVisible = await uiElements
-          .bodyModal(this.page)
-          .waitFor({ state: 'attached', timeout: 10000 })
-          .then(() => true)
-          .catch(() => false);
-        if (isModalVisible) {
-          await uiElements.closeModalButton(this.page).click();
-        }
+      const isModalVisible = await uiElements
+        .bodyModal(this.page)
+        .waitFor({ state: 'attached', timeout: 10000 })
+        .then(() => true)
+        .catch(() => false);
+      if (isModalVisible) {
+        await uiElements.closeModalButton(this.page).click();
       }
     });
 
     await test.step(`Раскрытие меню пользователя и разлогинивание`, async () => {
-      if (uiElements.loginMenuSettings && uiElements.logoutMenu) {
-        await expect(uiElements.loginMenuSettings(this.page)).toBeInViewport();
-        await uiElements.loginMenuSettings(this.page).click();
-        await expect(uiElements.logoutMenu(this.page)).toBeInViewport();
-        await uiElements.logoutMenu(this.page).click();
-      }
+      await expect(uiElements.loginMenuSettings(this.page)).toBeInViewport();
+      await uiElements.loginMenuSettings(this.page).click();
+      await expect(uiElements.logoutMenu(this.page)).toBeInViewport();
+      await uiElements.logoutMenu(this.page).click();
     });
   }
 }

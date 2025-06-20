@@ -14,7 +14,7 @@ export class AuthLocators {
   }
 
   static getBodyModal(page: Page): Locator {
-    return page.locator('.ant-modal-body');
+    return page.getByTestId('title');
   }
   static getCloseModalButton(page: Page): Locator {
     return page.getByTestId('close-dialog');
@@ -31,13 +31,16 @@ export interface AuthElements {
   loginField?: (page: Page) => Locator;
   passwordField?: (page: Page) => Locator;
   enterButton?: (page: Page) => Locator;
-  bodyModal?: (page: Page) => Locator;
-  closeModalButton?: (page: Page) => Locator;
-  loginMenuSettings?: (page: Page) => Locator;
-  logoutMenu?: (page: Page) => Locator;
-  text?: string;
-  name?: string;
-  password?: string;
+  text: string;
+  name: string;
+  password: string;
+}
+
+export interface authUIElements {
+  bodyModal: (page: Page) => Locator;
+  closeModalButton: (page: Page) => Locator;
+  loginMenuSettings: (page: Page) => Locator;
+  logoutMenu: (page: Page) => Locator;
 }
 
 export const authElements: AuthElements[] = [
@@ -67,7 +70,7 @@ export const authElements: AuthElements[] = [
   },
 ];
 
-export const authUIElements: AuthElements = {
+export const authUIElements: authUIElements = {
   bodyModal: AuthLocators.getBodyModal,
   closeModalButton: AuthLocators.getCloseModalButton,
   loginMenuSettings: AuthLocators.getUserMenu,

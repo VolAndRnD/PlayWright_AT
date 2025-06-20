@@ -1,6 +1,6 @@
 import { Page, test, expect } from '@playwright/test';
-import { LendElements } from '../locators/LendLocators';
-import { AuthElements } from '../locators/AuthLocators';
+import { LendingElements, LendingUIElements } from '../locators/LendLocators';
+import { authUIElements } from '../locators/AuthLocators';
 
 export class LendingPage {
   readonly page: Page;
@@ -14,34 +14,26 @@ export class LendingPage {
     await this.page.waitForLoadState('load');
   }
 
-  async openAuthModal(elementsUI: LendElements) {
+  async openAuthModal(elementsUI: LendingUIElements) {
     await test.step('Открытие модалки авторизации для работодателя', async () => {
-      if (
-        elementsUI.modalAuth &&
-        elementsUI.setEmployerSwitcher &&
-        elementsUI.getEmployerSwitcher
-      ) {
-        await elementsUI.modalAuth(this.page).click();
-        await elementsUI.setEmployerSwitcher(this.page).click();
-        await expect(elementsUI.getEmployerSwitcher(this.page)).toContainText('Я соискатель', {
-          timeout: 3000,
-        });
-      }
+      await elementsUI.modalAuth(this.page).click();
+      await elementsUI.setEmployerSwitcher(this.page).click();
+      await expect(elementsUI.getEmployerSwitcher(this.page)).toBeVisible();
     });
   }
-  async enterPhoneNumber(authElements: LendElements) {
+
+  async enterPhoneNumber(authElements: LendingElements) {
     await test.step('Смена кода номера телефона под код страны Беларусь', async () => {
-      if (authElements.getCountryButton && authElements.setCountryButton) {
-        const russiaOption = authElements.getCountryButton(this.page);
-        await expect(russiaOption).toBeVisible();
-        await russiaOption.click();
-        const belarusOption = authElements.setCountryButton(this.page);
-        await expect(belarusOption).toBeVisible();
-        await belarusOption.click();
-      }
+      const russiaOption = authElements.getCountryButton(this.page);
+      await expect(russiaOption).toBeVisible();
+      await russiaOption.click();
+
+      const belarusOption = authElements.setCountryButton(this.page);
+      await expect(belarusOption).toBeVisible();
+      await belarusOption.click();
     });
     await test.step('Ввод номера телефона пользователя', async () => {
-      if (authElements.setNumberPhoneField && authElements.text) {
+      if (authElements.setNumberPhoneField) {
         const activeField = authElements.setNumberPhoneField(this.page);
         await expect(activeField).toBeVisible();
         await activeField.click();
@@ -49,9 +41,9 @@ export class LendingPage {
       }
     });
   }
-  async enterSMSPassword(authElements: LendElements) {
+  async enterSMSPassword(authElements: LendingElements) {
     await test.step('Ввод кода авторизации из смс', async () => {
-      if (authElements.getEnterButton && authElements.setSMSField && authElements.password) {
+      if (authElements.setSMSField) {
         const enterButton = authElements.getEnterButton(this.page);
         await expect(enterButton).toBeVisible();
         await enterButton.click();
@@ -63,7 +55,7 @@ export class LendingPage {
       }
     });
   }
-  async enterLoginPassword(authElements: LendElements) {
+  async enterLoginPassword(authElements: LendingElements) {
     await test.step('Активация поля для ввода пароля', async () => {
       if (authElements.getPasswordField) {
         const usePasswordButton = authElements.getPasswordField(this.page);
@@ -72,7 +64,7 @@ export class LendingPage {
       }
     });
     await test.step('Ввод пароля', async () => {
-      if (authElements.setPasswordField && authElements.password) {
+      if (authElements.setPasswordField) {
         const passwordField = authElements.setPasswordField(this.page);
         await expect(passwordField).toBeVisible();
         await passwordField.click();
@@ -80,34 +72,28 @@ export class LendingPage {
       }
     });
     await test.step('вход в ЛК', async () => {
-      if (authElements.getEnterButton) {
-        const buttonEnter = authElements.getEnterButton(this.page);
-        await expect(buttonEnter).toBeVisible();
-        await buttonEnter.click();
-      }
+      const buttonEnter = authElements.getEnterButton(this.page);
+      await expect(buttonEnter).toBeVisible();
+      await buttonEnter.click();
     });
   }
-  async exitLogin(uiElements: AuthElements) {
+  async exitLogin(uiElements: authUIElements) {
     await test.step(`Проверка на отображение стартовой модалки после авторизации`, async () => {
-      if (uiElements.bodyModal && uiElements.closeModalButton) {
-        const isModalVisible = await uiElements
-          .bodyModal(this.page)
-          .waitFor({ state: 'attached', timeout: 10000 })
-          .then(() => true)
-          .catch(() => false);
-        if (isModalVisible) {
-          await uiElements.closeModalButton(this.page).click();
-        }
+      const isModalVisible = await uiElements
+        .bodyModal(this.page)
+        .waitFor({ state: 'attached', timeout: 5000 })
+        .then(() => true)
+        .catch(() => false);
+      if (isModalVisible) {
+        await uiElements.closeModalButton(this.page).click();
       }
     });
 
     await test.step(`Раскрытие меню пользователя и разлогинивание`, async () => {
-      if (uiElements.loginMenuSettings && uiElements.logoutMenu) {
-        await expect(uiElements.loginMenuSettings(this.page)).toBeInViewport();
-        await uiElements.loginMenuSettings(this.page).click();
-        await expect(uiElements.logoutMenu(this.page)).toBeInViewport();
-        await uiElements.logoutMenu(this.page).click();
-      }
+      await expect(uiElements.loginMenuSettings(this.page)).toBeInViewport();
+      await uiElements.loginMenuSettings(this.page).click();
+      await expect(uiElements.logoutMenu(this.page)).toBeInViewport();
+      await uiElements.logoutMenu(this.page).click();
     });
   }
 }
