@@ -4,7 +4,7 @@ import { lendingAuthElements, lendingUIElements } from '../locators/LendLocators
 
 test.describe('Тесты авторизации работодателя', () => {
   test(`Авторизация со страницы лендинга`, async ({ lendingPage, browser }) => {
-    test.setTimeout(60000);
+    test.slow();
     for (const testCase of lendingAuthElements) {
       const context = await browser.newContext();
       try {
@@ -16,23 +16,26 @@ test.describe('Тесты авторизации работодателя', () =
         } else {
           await lendingPage.enterLoginPassword(testCase);
         }
+        await lendingPage.page.waitForTimeout(5000);
       } finally {
         await context.close();
-        await lendingPage.page.waitForTimeout(5000);
       }
     }
   });
 
   test('Авторизация со страницы ЛК site-login', async ({ authPage }) => {
-    test.setTimeout(60000);
-
-    await authPage.openAuthPage();
-    for (const testCase of authElements) {
-      if (authPage.page.isClosed()) {
-        await authPage.openAuthPage();
+    test.slow();
+    try {
+      await authPage.openAuthPage();
+      for (const testCase of authElements) {
+        if (authPage.page.isClosed()) {
+          await authPage.openAuthPage();
+        }
+        await authPage.enterLogin(testCase);
+        await authPage.exitLogin(authUIElements);
       }
-      await authPage.enterLogin(testCase);
-      await authPage.exitLogin(authUIElements);
+    } finally {
+      await authPage.page.close();
     }
   });
 });

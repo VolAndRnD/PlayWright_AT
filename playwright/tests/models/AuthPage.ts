@@ -9,10 +9,8 @@ export class AuthPage {
   }
 
   async openAuthPage() {
-    await this.page.goto('http://1464.release.macroncrm.ru/site-login', {
-      waitUntil: 'load',
-      timeout: 30000,
-    });
+    await this.page.goto('http://1464.release.macroncrm.ru/site-login');
+    await this.page.waitForLoadState('load');
   }
 
   async enterLogin(credentials: AuthElements) {
@@ -28,7 +26,7 @@ export class AuthPage {
     });
 
     await test.step(`Ввод валидного пароля`, async () => {
-      if (credentials.passwordField && credentials.password) {
+      if (credentials.passwordField) {
         const passwordField = credentials.passwordField(this.page);
         await expect(passwordField).toBeVisible();
         await passwordField.click();
@@ -45,7 +43,7 @@ export class AuthPage {
     await test.step(`Проверка на отображение стартовой модалки после авторизации`, async () => {
       const isModalVisible = await uiElements
         .bodyModal(this.page)
-        .waitFor({ state: 'attached', timeout: 10000 })
+        .waitFor({ state: 'attached', timeout: 5000 })
         .then(() => true)
         .catch(() => false);
       if (isModalVisible) {
