@@ -27,7 +27,7 @@ export default defineConfig({
   globalTimeout: 60 * 1000,
   use: {
     /* Base URL to use in actions like `await page.goto('/')`. */
-    baseURL: 'http://localhost:3000',
+    baseURL: 'http://1464.release.macroncrm.ru',
     headless: true,
     viewport: { width: 1280, height: 720 },
 

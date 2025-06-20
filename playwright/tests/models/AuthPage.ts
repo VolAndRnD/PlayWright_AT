@@ -60,7 +60,7 @@ export class AuthPage {
   }
 
   async openAuthPage() {
-    await this.page.goto('http://1464.release.macroncrm.ru/site-login');
+    await this.page.goto('/site-login');
     await this.page.waitForLoadState('load');
   }
 
