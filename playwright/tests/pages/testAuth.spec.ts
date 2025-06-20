@@ -1,20 +1,20 @@
 import { test } from '../fixtures/mainPage';
 
 test.describe('Тесты авторизации работодателя', () => {
-  test(`Авторизация со страницы лендинга`, async ({ lendingPage, browser }) => {
+  test(`Авторизация со страницы лендинга`, async ({ landingPage, browser }) => {
     test.slow();
-    for (const testCase of lendingPage.lendingElements) {
+    for (const testCase of landingPage.landingElements) {
       const context = await browser.newContext();
       try {
-        await lendingPage.openMainPage();
-        await lendingPage.openAuthModal(lendingPage.lendingUIElements);
-        await lendingPage.enterPhoneNumber(testCase);
+        await landingPage.openMainPage();
+        await landingPage.openAuthModal(landingPage.landingUIElements);
+        await landingPage.enterPhoneNumber(testCase);
         if (testCase.name === 'SMS') {
-          await lendingPage.enterSMSPassword(testCase);
+          await landingPage.enterSMSPassword(testCase);
         } else {
-          await lendingPage.enterLoginPassword(testCase);
+          await landingPage.enterLoginPassword(testCase);
         }
-        await lendingPage.page.waitForTimeout(5000);
+        await landingPage.page.waitForTimeout(5000);
       } finally {
         await context.close();
       }

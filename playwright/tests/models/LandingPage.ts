@@ -1,7 +1,7 @@
 import { Page, test, expect, Locator } from '@playwright/test';
-import { AuthUIElements } from '../models/AuthPage';
+import { AuthUIElements } from './AuthPage';
 
-export interface LendingElements {
+export interface LandingElements {
   getCountryButton: (page: Page) => Locator;
   setCountryButton: (page: Page) => Locator;
   setNumberPhoneField: (page: Page) => Locator;
@@ -14,15 +14,15 @@ export interface LendingElements {
   password: string;
 }
 
-export interface LendingUIElements {
+export interface LandingUIElements {
   modalAuth: (page: Page) => Locator;
   setEmployerSwitcher: (page: Page) => Locator;
   getEmployerSwitcher: (page: Page) => Locator;
 }
 
-export class LendingPage {
-  readonly lendingElements: LendingElements[];
-  readonly lendingUIElements: LendingUIElements;
+export class LandingPage {
+  readonly lendingElements: LandingElements[];
+  readonly lendingUIElements: LandingUIElements;
   constructor(public readonly page: Page) {
     this.lendingElements = [
       {
@@ -64,7 +64,7 @@ export class LendingPage {
     await this.page.waitForLoadState('load');
   }
 
-  async openAuthModal(elementsUI: LendingUIElements) {
+  async openAuthModal(elementsUI: LandingUIElements) {
     await test.step('Открытие модалки авторизации для работодателя', async () => {
       await elementsUI.modalAuth(this.page).click();
       await elementsUI.setEmployerSwitcher(this.page).click();
@@ -72,7 +72,7 @@ export class LendingPage {
     });
   }
 
-  async enterPhoneNumber(authElements: LendingElements) {
+  async enterPhoneNumber(authElements: LandingElements) {
     await test.step('Смена кода номера телефона под код страны Беларусь', async () => {
       const russiaOption = authElements.getCountryButton(this.page);
       await expect(russiaOption).toBeVisible();
@@ -92,7 +92,7 @@ export class LendingPage {
     });
   }
 
-  async enterSMSPassword(authElements: LendingElements) {
+  async enterSMSPassword(authElements: LandingElements) {
     await test.step('Ввод кода авторизации из смс', async () => {
       const enterButton = authElements.getEnterButton(this.page);
       await expect(enterButton).toBeVisible();
@@ -116,7 +116,7 @@ export class LendingPage {
     });
   }
 
-  async enterLoginPassword(authElements: LendingElements) {
+  async enterLoginPassword(authElements: LandingElements) {
     await test.step('Активация поля для ввода пароля', async () => {
       if (authElements.getPasswordField) {
         const usePasswordButton = authElements.getPasswordField(this.page);

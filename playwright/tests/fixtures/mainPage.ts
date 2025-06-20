@@ -1,16 +1,16 @@
 import { test as base } from '@playwright/test';
-import { LendingPage } from '../models/LendingPage';
+import { LandingPage } from '../models/LandingPage';
 import { AuthPage } from '../models/AuthPage';
 
 interface MyFixtures {
-  lendingPage: LendingPage;
+  landingPage: LandingPage;
   authPage: AuthPage;
 }
 
 export const test = base.extend<MyFixtures>({
-  lendingPage: async ({ page }, use) => {
-    const lendingPage = new LendingPage(page);
-    await use(lendingPage);
+  landingPage: async ({ page }, use) => {
+    const landingPage = new LandingPage(page);
+    await use(landingPage);
   },
 
   authPage: async ({ page }, use) => {
