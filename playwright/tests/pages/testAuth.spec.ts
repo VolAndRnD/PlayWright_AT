@@ -1,15 +1,13 @@
 import { test } from '../fixtures/mainPage';
-import { authElements, authUIElements } from '../locators/AuthLocators';
-import { lendingAuthElements, lendingUIElements } from '../locators/LendLocators';
 
 test.describe('Тесты авторизации работодателя', () => {
   test(`Авторизация со страницы лендинга`, async ({ lendingPage, browser }) => {
     test.slow();
-    for (const testCase of lendingAuthElements) {
+    for (const testCase of lendingPage.lendingElements) {
       const context = await browser.newContext();
       try {
         await lendingPage.openMainPage();
-        await lendingPage.openAuthModal(lendingUIElements);
+        await lendingPage.openAuthModal(lendingPage.lendingUIElements);
         await lendingPage.enterPhoneNumber(testCase);
         if (testCase.name === 'SMS') {
           await lendingPage.enterSMSPassword(testCase);
@@ -27,12 +25,12 @@ test.describe('Тесты авторизации работодателя', () =
     test.slow();
     try {
       await authPage.openAuthPage();
-      for (const testCase of authElements) {
+      for (const testCase of authPage.authElements) {
         if (authPage.page.isClosed()) {
           await authPage.openAuthPage();
         }
         await authPage.enterLogin(testCase);
-        await authPage.exitLogin(authUIElements);
+        await authPage.exitLogin(authPage.authUIElements);
       }
     } finally {
       await authPage.page.close();

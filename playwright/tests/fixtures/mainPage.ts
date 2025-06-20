@@ -10,13 +10,13 @@ interface MyFixtures {
 export const test = base.extend<MyFixtures>({
   lendingPage: async ({ page }, use) => {
     const lendingPage = new LendingPage(page);
-    await lendingPage.openMainPage();
     await use(lendingPage);
   },
+
   authPage: async ({ page }, use) => {
     const authPage = new AuthPage(page);
-    await authPage.openAuthPage();
     await use(authPage);
   },
 });
+
 export { expect } from '@playwright/test';

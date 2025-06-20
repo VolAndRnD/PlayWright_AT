@@ -1,12 +1,62 @@
-import { Page, test, expect } from '@playwright/test';
-import { LendingElements, LendingUIElements } from '../locators/LendLocators';
-import { authUIElements } from '../locators/AuthLocators';
+import { Page, test, expect, Locator } from '@playwright/test';
+import { AuthUIElements } from '../models/AuthPage';
+
+export interface LendingElements {
+  getCountryButton: (page: Page) => Locator;
+  setCountryButton: (page: Page) => Locator;
+  setNumberPhoneField: (page: Page) => Locator;
+  getEnterButton: (page: Page) => Locator;
+  setSMSField?: (page: Page) => Locator;
+  getPasswordField?: (page: Page) => Locator;
+  setPasswordField?: (page: Page) => Locator;
+  text: string;
+  name: string;
+  password: string;
+}
+
+export interface LendingUIElements {
+  modalAuth: (page: Page) => Locator;
+  setEmployerSwitcher: (page: Page) => Locator;
+  getEmployerSwitcher: (page: Page) => Locator;
+}
 
 export class LendingPage {
-  readonly page: Page;
+  readonly lendingElements: LendingElements[];
+  readonly lendingUIElements: LendingUIElements;
+  constructor(public readonly page: Page) {
+    this.lendingElements = [
+      {
+        getCountryButton: (page: Page) => page.getByRole('button', { name: 'Russia: +' }),
+        setCountryButton: (page: Page) => page.getByRole('option', { name: 'Belarus+' }),
+        setNumberPhoneField: (page: Page) =>
+          page.getByRole('textbox', { name: '+375 (29) 999-99-' }),
+        setSMSField: (page: Page) => page.getByRole('textbox', { name: '* Код подтверждения' }),
+        getEnterButton: (page: Page) => page.getByRole('button', { name: 'Войти' }),
+        text: '+375 (30) 000 00 02',
+        name: 'SMS',
+        password: '1111',
+      },
+      {
+        getCountryButton: (page: Page) => page.getByRole('button', { name: 'Russia: +' }),
+        setCountryButton: (page: Page) => page.getByRole('option', { name: 'Belarus+' }),
+        setNumberPhoneField: (page: Page) =>
+          page.getByRole('textbox', { name: '+375 (29) 999-99-' }),
+        getPasswordField: (page: Page) => page.getByText('Войти, используя пароль'),
+        setPasswordField: (page: Page) => page.getByRole('textbox', { name: '* Пароль' }),
+        getEnterButton: (page: Page) => page.getByRole('button', { name: 'Войти' }),
+        text: '+375 (30) 000 00 02',
+        name: 'Password',
+        password: 'gbhjvfy',
+      },
+    ];
 
-  constructor(page: Page) {
-    this.page = page;
+    this.lendingUIElements = {
+      modalAuth: (page: Page) => page.getByTestId('login'),
+      setEmployerSwitcher: (page: Page) =>
+        page.getByRole('switch', { name: 'Я соискатель Я работодатель' }),
+      getEmployerSwitcher: (page: Page) =>
+        page.locator('button[aria-checked="true"]').filter({ hasText: 'Я работодатель' }),
+    };
   }
 
   async openMainPage() {
@@ -41,20 +91,31 @@ export class LendingPage {
       }
     });
   }
+
   async enterSMSPassword(authElements: LendingElements) {
     await test.step('Ввод кода авторизации из смс', async () => {
-      if (authElements.setSMSField) {
-        const enterButton = authElements.getEnterButton(this.page);
-        await expect(enterButton).toBeVisible();
-        await enterButton.click();
+      const enterButton = authElements.getEnterButton(this.page);
+      await expect(enterButton).toBeVisible();
+      await enterButton.click();
+      await this.page.waitForTimeout(10000);
+    });
 
+    // await test.step(`Сравнение скриншота авторизации с помощью ${authElements.name} `, async () => {
+    //   await expect(this.page).toHaveScreenshot(`LendingPageForAuth${authElements.name}.png`, {
+    //     threshold: 0.1,
+    //   });
+    // });
+
+    await test.step('Ввод кода авторизации из смс', async () => {
+      if (authElements.setSMSField) {
         const activeTextBox = authElements.setSMSField(this.page);
-        await expect(activeTextBox).toBeVisible({ timeout: 10000 });
+        await expect(activeTextBox).toBeVisible();
         await activeTextBox.click();
         await activeTextBox.fill(authElements.password);
       }
     });
   }
+
   async enterLoginPassword(authElements: LendingElements) {
     await test.step('Активация поля для ввода пароля', async () => {
       if (authElements.getPasswordField) {
@@ -71,13 +132,20 @@ export class LendingPage {
         await passwordField.fill(authElements.password);
       }
     });
+
+    // await test.step(`Сравнение скриншота авторизации с помощью ${authElements.name} `, async () => {
+    //   await expect(this.page).toHaveScreenshot(`LendingPageForAuth${authElements.name}.png`, {
+    //     threshold: 0.1,
+    //   });
+    // });
+
     await test.step('вход в ЛК', async () => {
       const buttonEnter = authElements.getEnterButton(this.page);
       await expect(buttonEnter).toBeVisible();
       await buttonEnter.click();
     });
   }
-  async exitLogin(uiElements: authUIElements) {
+  async exitLogin(uiElements: AuthUIElements) {
     await test.step(`Проверка на отображение стартовой модалки после авторизации`, async () => {
       const isModalVisible = await uiElements
         .bodyModal(this.page)
