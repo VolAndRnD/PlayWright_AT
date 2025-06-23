@@ -21,10 +21,10 @@ export interface LandingUIElements {
 }
 
 export class LandingPage {
-  readonly lendingElements: LandingElements[];
-  readonly lendingUIElements: LandingUIElements;
+  readonly landingElements: LandingElements[];
+  readonly landingUIElements: LandingUIElements;
   constructor(public readonly page: Page) {
-    this.lendingElements = [
+    this.landingElements = [
       {
         getCountryButton: (page: Page) => page.getByRole('button', { name: 'Russia: +' }),
         setCountryButton: (page: Page) => page.getByRole('option', { name: 'Belarus+' }),
@@ -50,7 +50,7 @@ export class LandingPage {
       },
     ];
 
-    this.lendingUIElements = {
+    this.landingUIElements = {
       modalAuth: (page: Page) => page.getByTestId('login'),
       setEmployerSwitcher: (page: Page) =>
         page.getByRole('switch', { name: 'Я соискатель Я работодатель' }),
