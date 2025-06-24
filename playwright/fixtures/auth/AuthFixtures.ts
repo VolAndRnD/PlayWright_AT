@@ -1,6 +1,6 @@
 import { test as base } from '@playwright/test';
-import { LandingPage } from '../models/LandingPage';
-import { AuthPage } from '../models/AuthPage';
+import { LandingPage } from '../../pages/auth/LandingPage';
+import { AuthPage } from '../../pages/auth/AuthPage';
 
 interface MyFixtures {
   landingPage: LandingPage;
