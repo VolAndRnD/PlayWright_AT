@@ -45,21 +45,18 @@ export class AuthPage {
   }
 
   async exitLogin() {
-    await test.step(`Проверка на отображение стартовой модалки после авторизации`, async () => {
-      const isModalVisible = await this.bodyModal
-        .waitFor({ state: 'attached', timeout: 10000 })
-        .then(() => true)
-        .catch(() => false);
-      if (isModalVisible) {
-        await this.closeModalButton.click();
-      }
-    });
-
-    await test.step(`Раскрытие меню пользователя и разлогинивание`, async () => {
-      await expect(this.loginMenuSettings).toBeInViewport();
-      await this.loginMenuSettings.click();
-      await expect(this.logoutMenu).toBeInViewport();
-      await this.logoutMenu.click();
-    });
+    // Проверка на отображение стартовой модалки после авторизации
+    const isModalVisible = await this.bodyModal
+      .waitFor({ state: 'attached', timeout: 10000 })
+      .then(() => true)
+      .catch(() => false);
+    if (isModalVisible) {
+      await this.closeModalButton.click();
+    }
+    // Выход из ЛК на страницу авторизации
+    await expect(this.loginMenuSettings).toBeInViewport();
+    await this.loginMenuSettings.click();
+    await expect(this.logoutMenu).toBeInViewport();
+    await this.logoutMenu.click();
   }
 }
