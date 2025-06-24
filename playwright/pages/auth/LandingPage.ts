@@ -61,12 +61,6 @@ export class LandingPage {
     await expect(this.getEnterButton).toBeVisible();
     await this.getEnterButton.click();
     await this.page.waitForTimeout(10000);
-
-    // await test.step(`Сравнение скриншота авторизации с помощью ${authElements.name} `, async () => {
-    //   await expect(this.page).toHaveScreenshot(`LendingPageForAuth${authElements.name}.png`, {
-    //     threshold: 0.1,
-    //   });
-    // });
     if (this.setSMSField) {
       await expect(this.setSMSField).toBeVisible();
       await this.setSMSField.click();
@@ -87,12 +81,6 @@ export class LandingPage {
       await this.setPasswordField.click();
       await this.setPasswordField.fill(password);
     }
-
-    // await test.step(`Сравнение скриншота авторизации с помощью ${authElements.name} `, async () => {
-    //   await expect(this.page).toHaveScreenshot(`LendingPageForAuth${authElements.name}.png`, {
-    //     threshold: 0.1,
-    //   });
-    // });
     await expect(this.getEnterButton).toBeVisible();
     await this.getEnterButton.click();
   }

@@ -1,21 +1,5 @@
 import { Page, test, expect, Locator } from '@playwright/test';
 
-// export interface AuthElements {
-//   loginField?: (page: Page) => Locator;
-//   passwordField?: (page: Page) => Locator;
-//   enterButton?: (page: Page) => Locator;
-//   text: string;
-//   name: string;
-//   password: string;
-// }
-
-// export interface AuthUIElements {
-//   bodyModal: (page: Page) => Locator;
-//   closeModalButton: (page: Page) => Locator;
-//   loginMenuSettings: (page: Page) => Locator;
-//   logoutMenu: (page: Page) => Locator;
-// }
-
 export class AuthPage {
   readonly loginField: Locator;
   readonly passwordField: Locator;
@@ -42,7 +26,6 @@ export class AuthPage {
   }
 
   async fillLogin(credentials: string) {
-    //await test.step(`Используется ${credentials.name} в поле логина`, async () => {
     if (this.loginField) {
       await expect(this.loginField).toBeVisible();
       await this.loginField.click();
@@ -51,20 +34,11 @@ export class AuthPage {
   }
 
   async fillPassword(password: string) {
-    //await test.step(`Ввод валидного пароля`, async () => {
     if (this.passwordField) {
       await expect(this.passwordField).toBeVisible();
       await this.passwordField.click();
       await this.passwordField.fill(password);
     }
-
-    // await test.step(`Сравнение скриншота авторизаци через ${credentials.name}`, async () => {
-    //   await expect(this.page).toHaveScreenshot(`AuthPageFor${credentials.name}.png`, {
-    //     threshold: 0.1,
-    //   });
-    // });
-
-    // await test.step(`Нажатие на кнопку войти`, async () => {
     if (this.enterButton) {
       await this.enterButton.click();
     }
