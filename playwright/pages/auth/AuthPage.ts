@@ -39,14 +39,13 @@ export class AuthPage {
   }
 
   async exitLogin() {
-    // Проверка на отображение стартовой модалки после авторизации
-    const isModalVisible = await this.bodyModal
-      .waitFor({ state: 'attached', timeout: 10000 })
-      .then(() => true)
-      .catch(() => false);
-    if (isModalVisible) {
+    // Выход со стартовой модалки после авторизации, если она появляется
+    const modal = this.bodyModal;
+    try {
+      await modal.waitFor({ state: 'attached', timeout: 10000 });
       await this.closeModalButton.click();
-    }
+    } catch {}
+
     // Выход из ЛК на страницу авторизации
     await expect(this.loginMenuSettings).toBeInViewport();
     await this.loginMenuSettings.click();

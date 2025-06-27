@@ -60,7 +60,7 @@ export class LandingPage {
   async enterSMSPassword(SMSpassword: string) {
     await expect(this.getEnterButton).toBeVisible();
     await this.getEnterButton.click();
-    await this.page.waitForTimeout(10000);
+    await this.page.waitForTimeout(2000);
     if (this.setSMSField) {
       await expect(this.setSMSField).toBeVisible();
       await this.setSMSField.click();
