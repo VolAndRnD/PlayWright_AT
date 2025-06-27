@@ -24,7 +24,7 @@ test.describe('Тесты раздела Ежедневник', () => {
     await test.step('Проверка активности табов', async () => {
       await orgCalendar.clickableTabReminders();
     });
-    await test.step('Проверка активности табов', async () => {
+    await test.step('Проверка активности фильтра по статусам напоминаний', async () => {
       await orgCalendar.clickableStatusReminder();
     });
   });
