@@ -13,7 +13,7 @@ export const test = base.extend<CalendarOrganaizerFixtures>({
     await use(authApi);
   },
   orgCalendar: async ({ page }, use) => {
-    const authPage = new OrgCalendarPage(page);
-    await use(authPage);
+    const orgCalendarPage = new OrgCalendarPage(page);
+    await use(orgCalendarPage);
   },
 });
