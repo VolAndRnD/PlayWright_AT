@@ -1,4 +1,4 @@
-export interface AuthElements {
+export interface AuthСredentials {
   email: string;
   login: string;
   password: string;
@@ -6,7 +6,7 @@ export interface AuthElements {
   SMSPassword: string;
 }
 
-export const credentials: AuthElements = {
+export const credentials: AuthСredentials = {
   email: 'autotest@whcrm.ru',
   login: 'admin',
   password: 'gbhjvfy',

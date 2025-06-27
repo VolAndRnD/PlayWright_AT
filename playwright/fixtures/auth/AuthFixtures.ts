@@ -2,12 +2,12 @@ import { test as base } from '@playwright/test';
 import { LandingPage } from '../../pages/auth/LandingPage';
 import { AuthPage } from '../../pages/auth/AuthPage';
 
-interface MyFixtures {
+interface AuthFixtures {
   landingPage: LandingPage;
   authPage: AuthPage;
 }
 
-export const test = base.extend<MyFixtures>({
+export const test = base.extend<AuthFixtures>({
   landingPage: async ({ page }, use) => {
     const landingPage = new LandingPage(page);
     await use(landingPage);

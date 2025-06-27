@@ -1,4 +1,4 @@
-import { Page, test, expect, Locator } from '@playwright/test';
+import { Page, expect, Locator } from '@playwright/test';
 
 export class AuthPage {
   readonly loginField: Locator;
@@ -26,22 +26,16 @@ export class AuthPage {
   }
 
   async fillLogin(credentials: string) {
-    if (this.loginField) {
-      await expect(this.loginField).toBeVisible();
-      await this.loginField.click();
-      await this.loginField.fill(credentials);
-    }
+    await expect(this.loginField).toBeVisible();
+    await this.loginField.click();
+    await this.loginField.fill(credentials);
   }
 
   async fillPassword(password: string) {
-    if (this.passwordField) {
-      await expect(this.passwordField).toBeVisible();
-      await this.passwordField.click();
-      await this.passwordField.fill(password);
-    }
-    if (this.enterButton) {
-      await this.enterButton.click();
-    }
+    await expect(this.passwordField).toBeVisible();
+    await this.passwordField.click();
+    await this.passwordField.fill(password);
+    await this.enterButton.click();
   }
 
   async exitLogin() {
