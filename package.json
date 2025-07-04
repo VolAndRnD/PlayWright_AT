@@ -9,6 +9,8 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "date-fns": "^4.1.0",
+    "dayjs": "^1.11.13",
     "prompt-sync": "^4.2.0"
   }
 }

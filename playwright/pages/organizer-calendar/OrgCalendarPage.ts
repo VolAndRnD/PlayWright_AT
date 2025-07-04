@@ -1,6 +1,8 @@
-import { Page, expect, Locator } from '@playwright/test';
+import { Page, Locator } from '@playwright/test';
 import { DailyPlannerOrganizer } from './elements/DailyPlannerOrganizer';
 import { StatusRemindersSelector } from './elements/StatusReminderSelector';
+import { ChangeReminderModal } from './elements/ChangeReminderModal';
+import { CreateReminderModal } from './elements/CreateReminderModal';
 
 export class OrgCalendarPage {
   readonly allListRemindersTab: Locator;
@@ -14,6 +16,8 @@ export class OrgCalendarPage {
 
   readonly DailyPlannerOrganizer: DailyPlannerOrganizer;
   readonly StatusRemindersSelector: StatusRemindersSelector;
+  readonly ChangeReminderModal: ChangeReminderModal;
+  readonly CreateReminderModal: CreateReminderModal;
 
   constructor(public readonly page: Page) {
     this.page = page;
@@ -28,10 +32,13 @@ export class OrgCalendarPage {
     this.currentDayBlock = this.page.getByTestId('current-day');
     this.reminderEmptyBlock = this.page.getByTestId('reminder-empty-block');
     this.StatusRemindersSelector = new StatusRemindersSelector(this.page);
+    this.DailyPlannerOrganizer = new DailyPlannerOrganizer(this.page);
+    this.CreateReminderModal = new CreateReminderModal(this.page);
+    this.ChangeReminderModal = new ChangeReminderModal(this.page);
   }
   async gotoPageDaily(): Promise<void> {
     await this.page.goto('/organizer-calendar');
-    await this.page.waitForLoadState('load');
+    await this.page.waitForLoadState('networkidle');
   }
 
   async viewDefaultElementsReminders(): Promise<void> {
@@ -58,5 +65,9 @@ export class OrgCalendarPage {
     });
     await this.StatusRemindersSelector.viewDropdownElements();
     await this.page.keyboard.press('Escape');
+  }
+
+  async clickableDailyOrganaizerBlock(): Promise<void> {
+    await this.DailyPlannerOrganizer.viewDailyPlanerBlock();
   }
 }

@@ -10,5 +10,9 @@
   "devDependencies": {
     "@playwright/test": "^1.52.0",
     "@types/node": "^22.15.23"
+  },
+  "dependencies": {
+    "date-fns": "^4.1.0",
+    "dayjs": "^1.11.13"
   }
 }
