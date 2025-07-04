@@ -23,6 +23,27 @@ export class DailyPlannerOrganizer {
       '//div[contains(@class, "ant-picker-dropdown ant-picker-dropdown-placement-topLeft")]',
     );
     this.remindersForStaffSelector = this.page.getByTestId('search-select');
-    this.employersListDropdown = this.page.getByTestId('text-overflow');
+    this.employersListDropdown = this.page
+      .getByTestId('2')
+      .filter({
+        has: this.page.locator(
+          '//div[contains(@class, "ant-select-item ant-select-item-option ant-select-item-option-active ant-select-item-option-selected")]',
+        ),
+      });
+  }
+
+  async viewDailyPlanerBlock(): Promise<void> {
+    await this.dailyPlannerOrganaizerBlock.isVisible();
+    await this.customDatesOrganizer.isVisible();
+    await this.prevArrowButton.click();
+    await this.nextArrowButton.click();
+    await this.monthListButtons.isVisible();
+    await this.monthlyReminderPicker.isVisible();
+    await this.monthlyReminderPicker.click();
+    await this.monthlyPickerDropdown.isVisible();
+    await this.page.keyboard.press('Escape');
+    await this.remindersForStaffSelector.click();
+    await this.employersListDropdown.isVisible();
+    await this.page.keyboard.press('Escape');
   }
 }

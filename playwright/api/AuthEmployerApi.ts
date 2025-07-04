@@ -24,7 +24,7 @@ export class AuthEmployer {
     context: BrowserContext;
     username?: string;
     password?: string;
-  }) {
+  }): Promise<void> {
     try {
       const response = await this.request.post('/api/auth/login', {
         params: {
@@ -39,8 +39,7 @@ export class AuthEmployer {
 
       if (response.ok()) {
         const data = await response.json();
-        this.token = data.data.token;
-
+        this.token = data.data.token; // Сохраняем токен
         if (!this.token || this.token === '') {
           throw new Error('Токен не получен при авторизации. Проверьте учетные данные.');
         }
