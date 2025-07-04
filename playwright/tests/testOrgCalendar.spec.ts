@@ -1,6 +1,5 @@
 import { test } from '../fixtures/calendarOrganaizer/CalendarOrganaizerFixtures';
 import { credentials } from '../constants/credentials';
-import { CreateRemindResponse } from '../typings/reminders/reminders';
 
 test.describe('Тесты раздела Ежедневник', () => {
   test(`Тест отображения элементов странцы Ежедневник`, async ({
