@@ -1,8 +1,18 @@
-import { APIRequestContext, APIResponse, FullConfig } from '@playwright/test';
+import { APIRequestContext, FullConfig } from '@playwright/test';
 import { AuthEmployer } from './AuthEmployerApi';
-import { stubReminderCreate, stubReminderDelete } from '../stubs/reminders/reminderStub';
-import { CreateRemindResponse } from '../typings/reminders/reminders';
+import {
+  stubReminderCreate,
+  stubReminderDelete,
+  stubReminderList,
+  stubReminderListDate,
+} from '../stubs/reminders/reminderStub';
+import {
+  CreateRemindResponse,
+  RemindersListDataResponse,
+  RemindersListResponse,
+} from '../typings/reminders/reminders';
 import { BaseApi } from '../api/baseApi';
+import { format } from 'date-fns';
 
 export class RemindersApi extends BaseApi {
   private readonly baseURL: string;
@@ -69,5 +79,50 @@ export class RemindersApi extends BaseApi {
       data: payload,
       timeout: 2000,
     });
+  }
+
+  async getReminderList(): Promise<RemindersListDataResponse> {
+    if (!this.authApi.accessToken) {
+      throw new Error('Authentication token is not available');
+    }
+
+    const params = {
+      'access-token': this.authApi.accessToken,
+    };
+    const payload = stubReminderList();
+    const apiUrl = `http://api.1464.release.macroncrm.ru/comment/group-count`;
+    const request: RemindersListDataResponse = await this.requestWithAuth('post', apiUrl, {
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+      },
+      params,
+      data: payload,
+      timeout: 2000,
+    });
+    // console.log(request);
+    return request;
+  }
+
+  async getReminderListDate(): Promise<RemindersListResponse> {
+    if (!this.authApi.accessToken) {
+      throw new Error('Authentication token is not available');
+    }
+    const params = {
+      'access-token': this.authApi.accessToken,
+    };
+    const payload = stubReminderListDate();
+    const apiUrl = `http://api.1464.release.macroncrm.ru/comment/index`;
+    const request: RemindersListResponse = await this.requestWithAuth('post', apiUrl, {
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+      },
+      params,
+      data: payload,
+      timeout: 2000,
+    });
+    // console.log(request);
+    return request;
   }
 }

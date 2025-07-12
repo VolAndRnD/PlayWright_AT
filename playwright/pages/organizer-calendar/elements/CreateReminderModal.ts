@@ -1,5 +1,6 @@
 import { Page, Locator, expect } from '@playwright/test';
 import { format, addDays } from 'date-fns';
+import dayjs from 'dayjs';
 
 export class CreateReminderModal {
   readonly customHeader: Locator;
@@ -103,14 +104,24 @@ export class CreateReminderModal {
 
     await this.afterTommorowButton.click();
 
-    if (await this.afterWeekendsAfterTommorowDropdown.isVisible()) {
+    const dayOfWeek = dayjs().format('dddd');
+    if ((await this.afterWeekendsAfterTommorowDropdown.isVisible()) && dayOfWeek === 'Thursday') {
+      //В четверг появляется список выбора переноса через выходные
       await this.afterWeekendsAfterTommorowDropdown.click();
       const today = new Date();
-      const afterWeekAfterTommorow = addDays(today, 3); //Уточнить, почему послезавтра - после выходных имеет такое же значение, что и завтра - после выходных
+      const afterWeekAfterTommorow = addDays(today, 4);
+      const formattedAfterWeekAfterTommorow = format(afterWeekAfterTommorow, 'dd.MM.yyyy');
+      await expect(this.dateField).toHaveAttribute('value', formattedAfterWeekAfterTommorow);
+      await this.afterTommorowButton.click();
+    } else {
+      await this.afterWeekendsAfterTommorowDropdown.click();
+      const today = new Date();
+      const afterWeekAfterTommorow = addDays(today, 3); //Уточнить, почему послезавтра - после выходных имеет такое же значение, что и завтра - после выходных, в пятницу
       const formattedAfterWeekAfterTommorow = format(afterWeekAfterTommorow, 'dd.MM.yyyy');
       await expect(this.dateField).toHaveAttribute('value', formattedAfterWeekAfterTommorow);
       await this.afterTommorowButton.click();
     }
+
     if (await this.weekDayAfterTommorowDropdown.isVisible()) {
       await this.weekDayAfterTommorowDropdown.click();
       const today = new Date();
@@ -151,6 +162,10 @@ export class CreateReminderModal {
     await expect(this.commentField).toHaveText('reminderTest');
   }
   async createReminder() {
+    await this.tommorowButton.click();
+    if (await this.afterWeekendsTommorowDropdown.isVisible()) {
+      await this.afterWeekendsTommorowDropdown.click();
+    }
     await this.addCommentButton.click();
   }
 }

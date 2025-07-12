@@ -3,6 +3,8 @@ import { DailyPlannerOrganizer } from './elements/DailyPlannerOrganizer';
 import { StatusRemindersSelector } from './elements/StatusReminderSelector';
 import { ChangeReminderModal } from './elements/ChangeReminderModal';
 import { CreateReminderModal } from './elements/CreateReminderModal';
+import { FilterTypeRemind } from './elements/FilterTypeRemind';
+import { ReminderCard } from './elements/ReminderCard';
 
 export class OrgCalendarPage {
   readonly allListRemindersTab: Locator;
@@ -18,6 +20,8 @@ export class OrgCalendarPage {
   readonly StatusRemindersSelector: StatusRemindersSelector;
   readonly ChangeReminderModal: ChangeReminderModal;
   readonly CreateReminderModal: CreateReminderModal;
+  readonly FilterTypeRemind: FilterTypeRemind;
+  readonly ReminderCard: ReminderCard;
 
   constructor(public readonly page: Page) {
     this.page = page;
@@ -31,10 +35,13 @@ export class OrgCalendarPage {
     this.resetFiltersButton = this.page.getByTestId('reset-filters');
     this.currentDayBlock = this.page.getByTestId('current-day');
     this.reminderEmptyBlock = this.page.getByTestId('reminder-empty-block');
+
     this.StatusRemindersSelector = new StatusRemindersSelector(this.page);
     this.DailyPlannerOrganizer = new DailyPlannerOrganizer(this.page);
     this.CreateReminderModal = new CreateReminderModal(this.page);
     this.ChangeReminderModal = new ChangeReminderModal(this.page);
+    this.FilterTypeRemind = new FilterTypeRemind(this.page);
+    this.ReminderCard = new ReminderCard(this.page);
   }
   async gotoPageDaily(): Promise<void> {
     await this.page.goto('/organizer-calendar');

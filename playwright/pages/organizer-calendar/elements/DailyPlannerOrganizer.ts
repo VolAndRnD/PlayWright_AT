@@ -1,4 +1,5 @@
 import { Locator, Page, expect } from '@playwright/test';
+import { format, addDays } from 'date-fns';
 
 export class DailyPlannerOrganizer {
   readonly dailyPlannerOrganaizerBlock: Locator;
@@ -11,6 +12,7 @@ export class DailyPlannerOrganizer {
   readonly remindersForStaffSelector: Locator;
   readonly employersListSelect: Locator;
   readonly employersListDropdown: Locator;
+  readonly nextDayNumberButton: Locator;
 
   constructor(public readonly page: Page) {
     this.page = page;
@@ -28,6 +30,7 @@ export class DailyPlannerOrganizer {
       '//div[@data-testid = "2"][contains(@class,"ant-select-item ant-select-item-option ant-select-item-option-active ant-select-item-option-selected")]',
     );
     this.employersListDropdown = this.employersListSelect.getByTestId('text-overflow');
+    this.nextDayNumberButton = this.page.getByTestId('day-number');
   }
 
   async viewDailyPlanerBlock(): Promise<void> {
@@ -44,5 +47,12 @@ export class DailyPlannerOrganizer {
     await this.employersListSelect.click();
     await expect(this.employersListDropdown).toHaveText('Автотест Автотестович');
     await this.page.keyboard.press('Escape');
+  }
+
+  async clickNextDay(): Promise<void> {
+    const today = new Date();
+    const tomorrow = addDays(today, 1);
+    const dayNumber = tomorrow.getDate();
+    await this.nextDayNumberButton.filter({ has: this.page.getByText(`${dayNumber}`) }).click();
   }
 }

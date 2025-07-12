@@ -1,4 +1,4 @@
-interface RemindData {
+export interface RemindData {
   uid_creator: number;
   name_creator: string;
   B: number;
@@ -101,3 +101,28 @@ interface CreatorUserInfo {
 }
 
 export type CreateRemindResponse = ApiResponse<RemindData>;
+
+interface RemindersListData {
+  data: [ListData];
+  pagination: Pagination;
+}
+
+interface ListData {
+  dt_remind: string;
+  item_count: number;
+}
+interface Pagination {
+  total_count: number;
+  page_count: number;
+  current_page: number;
+  per_page: number;
+}
+
+export type RemindersListDataResponse = ApiResponse<RemindersListData>;
+
+interface RemindsList {
+  items: RemindData[];
+  pagination: Pagination;
+}
+
+export type RemindersListResponse = ApiResponse<RemindsList>;
